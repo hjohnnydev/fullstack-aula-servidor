@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         body{
-            background-color : #F6DCAC;
+            background-color : #EEEEEE;
         }
     </style>
   </head>
@@ -40,17 +40,55 @@
     <div class="row md-4">
         <div class="d-grid gap-2 col-6 mx-auto">
             <!-- Botão para efetuar chamada para o servidor (button)-->
-                <button class="btn btn-outline-info">Calcular</button>
+                <button onclick="calcularDelta();" class="btn btn-outline-info">Calcular</button>
         </div>
     </div>
 
 
     <!-- Campo para exibir resultado (tag <p>)-->
-        <p id="resultado"></p>
+        <p id="resultado" class="border border-sucess"></p>
 
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <script>
+        function calcularDelta(){
+            const campo = documento.getElementById("resultado");
+            campo.innerHTML = "";
+            campo.innerHTML = "Aguarde... Calculando no servidor";
+            //obtemos os dados dos campos html e armazenamos os valores em variaveis
+            const a = document.getElementById("a").value;
+            const b = document.getElementById("b").value;
+            const c = document.getElementById("c").value;
+
+            //criamos um objeto com todas as variaveis que o servidor precisa para realizar o calculo
+            const payload = {
+                a,
+                b,
+                c
+            };
+
+            //alert(payload);
+            //convertemos o objeto em json para poder trafegar na rede
+            const json = JSON.stringify(payload);
+            //alert(json);
+
+            // configuramos a requisiçao e aguardamos a resposta
+            fetch('/processar.php', {
+                method: 'POST',
+                header: { 'Content-Type': 'application/json'},
+                body: json
+            })
+            .then(resposta => resposta.json())
+            .then(dados => {
+                //alert("O resultado do calculo é: " + dados.delta)                
+                campo.innerHTML = "O resultado do calculo é: " + dados.delta;
+            });
+
+        }
+
+    </script>
 
   </body>
 </html>
