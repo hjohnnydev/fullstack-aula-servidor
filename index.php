@@ -54,7 +54,7 @@
     
     <script>
         function calcularDelta(){
-            const campo = documento.getElementById("resultado");
+            const campo = document.getElementById("resultado");
             campo.innerHTML = "";
             campo.innerHTML = "Aguarde... Calculando no servidor";
             //obtemos os dados dos campos html e armazenamos os valores em variaveis
